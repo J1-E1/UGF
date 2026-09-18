@@ -1,0 +1,72 @@
+<svg viewBox="0 0 880 540" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, -apple-system, sans-serif">
+  <style>
+    .name{font-weight:600;font-size:15px;fill:#1f2328}
+    .sub{font-size:11.5px;fill:#57606a}
+    .tag{font-size:10px;fill:#0969da}
+    .edge{font-size:11px;fill:#57606a}
+    .noteh{font-weight:600;font-size:12px;fill:#1f2328}
+    .note{font-size:11px;fill:#57606a}
+    .box{fill:#f6f8fa;stroke:#afb8c1;stroke-width:1.4}
+    .accent{stroke:#0969da;stroke-width:1.8}
+    .line{stroke:#afb8c1;stroke-width:1.5;fill:none}
+    .deleg{stroke:#57606a;stroke-width:1.4;fill:none;stroke-dasharray:5 4}
+  </style>
+  <defs>
+    <marker id="tri" markerWidth="16" markerHeight="14" refX="13" refY="7" orient="auto">
+      <path d="M2,2 L14,7 L2,12 Z" fill="#f6f8fa" stroke="#0969da" stroke-width="1.3"/>
+    </marker>
+    <marker id="arr" markerWidth="11" markerHeight="11" refX="8" refY="5.5" orient="auto">
+      <path d="M1,1 L9,5.5 L1,10" fill="none" stroke="#57606a" stroke-width="1.5"/>
+    </marker>
+  </defs>
+
+  <rect class="box accent" x="320" y="34" width="240" height="74" rx="8"/>
+  <text class="name" x="440" y="62" text-anchor="middle">ALandscapeProxy</text>
+  <text class="sub" x="440" y="80" text-anchor="middle">抽象基类 · 一块 Terrain + 高度写入</text>
+  <text class="tag" x="440" y="98" text-anchor="middle">EnsureTerrain · GetLandscapeInfo/Guid</text>
+
+  <path class="line" d="M250,182 L425,108" marker-end="url(#tri)"/>
+  <path class="line" d="M630,182 L455,108" marker-end="url(#tri)"/>
+
+  <rect class="box" x="120" y="184" width="240" height="78" rx="8"/>
+  <text class="name" x="240" y="212" text-anchor="middle">ALandscape</text>
+  <text class="sub" x="240" y="231" text-anchor="middle">主体 master · 纯协调者</text>
+  <text class="sub" x="240" y="249" text-anchor="middle">持编辑层栈 + 维度描述符</text>
+
+  <rect class="box" x="520" y="184" width="240" height="78" rx="8"/>
+  <text class="name" x="640" y="212" text-anchor="middle">ALandscapeStreamingProxy</text>
+  <text class="sub" x="640" y="231" text-anchor="middle">瓦片 tile · 一块 = 一个 Terrain</text>
+  <text class="sub" x="640" y="249" text-anchor="middle">自己无 info,委托主体</text>
+
+  <path class="deleg" d="M520,223 L362,223" marker-end="url(#arr)"/>
+  <text class="edge" x="441" y="216" text-anchor="middle">委托 GetLandscapeActor()</text>
+
+  <rect class="box" x="300" y="334" width="280" height="74" rx="8"/>
+  <text class="name" x="440" y="362" text-anchor="middle">ULandscapeInfo</text>
+  <text class="sub" x="440" y="381" text-anchor="middle">共享编辑层栈(同 GUID 共享一份)</text>
+  <text class="tag" x="440" y="399" text-anchor="middle">List&lt;FLandscapeEditLayer&gt;</text>
+
+  <path class="line" d="M240,262 L380,334" marker-end="url(#arr)"/>
+  <text class="edge" x="262" y="312">拥有/创建</text>
+
+  <g transform="translate(626,300)">
+    <path class="line" d="M0,0 L34,0" marker-end="url(#tri)"/>
+    <text class="edge" x="42" y="4">继承</text>
+    <path class="line" d="M0,20 L34,20" marker-end="url(#arr)"/>
+    <text class="edge" x="42" y="24">拥有</text>
+    <path class="deleg" d="M0,40 L34,40" marker-end="url(#arr)"/>
+    <text class="edge" x="42" y="44">委托/引用</text>
+  </g>
+
+  <line x1="40" y1="446" x2="840" y2="446" stroke="#afb8c1" stroke-width="1" stroke-dasharray="2 3"/>
+  <g transform="translate(60,464)">
+    <text class="noteh" x="0" y="14">✗ 去掉基类会怎样</text>
+    <text class="note" x="0" y="34">EnsureTerrain 等公共地形宿主代码要在</text>
+    <text class="note" x="0" y="50">主体和瓦片里各抄一遍 → 改一处忘一处</text>
+  </g>
+  <g transform="translate(470,464)">
+    <text class="noteh" x="0" y="14">✗ 主体/瓦片合成一个类会怎样</text>
+    <text class="note" x="0" y="34">每个 info 方法都变成</text>
+    <text class="note" x="0" y="50">if (isMaster) 自己存 … else 找主体 … → 处处分叉</text>
+  </g>
+</svg>
